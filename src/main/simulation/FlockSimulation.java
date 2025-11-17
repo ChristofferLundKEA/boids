@@ -2,6 +2,7 @@ package main.simulation;
 
 import main.model.Boid;
 import main.model.BoidType;
+import main.model.RandomBoid;
 import main.spatial.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class FlockSimulation {
         int id = boids.size();
         double x = Math.random() * width;
         double y = Math.random() * height;
-        boids.add(new Boid(id, x, y, type));
+        boids.add(new Boid(id, x, y, new RandomBoid(), type));
     }
 
     public void setBoidCount(int count) {
@@ -46,7 +47,7 @@ public class FlockSimulation {
         
         for (int i = 0; i < boids.size(); i++) {
             Boid oldBoid = boids.get(i);
-            boids.set(i, new Boid(i, oldBoid.getX(), oldBoid.getY(), oldBoid.getType()));
+            boids.set(i, new Boid(i, oldBoid.getX(), oldBoid.getY(), new RandomBoid(), oldBoid.getType()));
         }
     }
 

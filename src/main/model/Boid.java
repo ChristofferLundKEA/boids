@@ -1,5 +1,6 @@
 package main.model;
 
+import main.behavior.BehaviorStrategy;
 import main.behavior.FlockBehavior;
 import main.simulation.*;
 
@@ -15,24 +16,25 @@ public class Boid {
     private static final double MAX_SPEED = 2.0;
     private static final double MAX_FORCE = 0.03;
     private static final int BOID_SIZE = 8;
+    private BehaviorStrategy behavior;
 
     public Boid(int id, double x, double y) {
-        this(id, x, y, BoidType.STANDARD);
+        this(id, x, y, new FlockBehavior(), BoidType.STANDARD);
     }
 
-    public Boid(int id, double x, double y, BoidType type) {
+    public Boid(int id, double x, double y, BehaviorStrategy behavior, BoidType type) {
         this.id = id;
         this.x = x;
         this.y = y;
+        this.behavior = behavior;
         this.type = type;
         this.vx = (Math.random() - 0.5) * 2;
         this.vy = (Math.random() - 0.5) * 2;
     }
 
-    FlockBehavior fb = new FlockBehavior();
 
     public void update(List<Boid> neighbors, int width, int height) {
-        Forces forces = fb.calculateForces(this, neighbors);
+        Forces forces = behavior.calculateForces(this, neighbors);
 
         vx += forces.separation().x() + forces.alignment().x() + forces.cohesion().x();
         vy += forces.separation().y() + forces.alignment().y() + forces.cohesion().y();
